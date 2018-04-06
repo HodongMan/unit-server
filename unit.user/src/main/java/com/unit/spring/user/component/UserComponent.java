@@ -30,4 +30,8 @@ public class UserComponent {
     public List<User> getUserList() {
         return userRepository.findAll();
     }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
 }

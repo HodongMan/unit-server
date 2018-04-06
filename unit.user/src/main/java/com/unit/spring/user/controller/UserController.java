@@ -2,7 +2,9 @@ package com.unit.spring.user.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,5 +31,16 @@ public class UserController {
     @RequestMapping(value="", method=RequestMethod.GET)
     List<User> getUserList() {
         return userComponent.getUserList();
+    }
+
+    @RequestMapping(value="", method=RequestMethod.POST)
+    public ResponseEntity<Void> createUser(@RequestBody User user) {
+
+        if (userComponent.getUserByEmail(user.getEmail()) != null) {
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+
+        userComponent.saveUser(user);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 }
